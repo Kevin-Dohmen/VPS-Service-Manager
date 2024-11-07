@@ -14,7 +14,6 @@ graph TB;
     API[REST API]
     SM[Service Manager]
     SS[Service Start Scripts]
-    DB{SQLite DB}
 
     subgraph Public
     WI-->|Internet|API
