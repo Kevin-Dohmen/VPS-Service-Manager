@@ -2,6 +2,7 @@ import os
 from enum import Enum, auto
 from typing import Optional
 import subprocess
+from py.utils.stringvalidators import formatValidFolderName, formatValidDockerName
 
 def ensure_directory(path: str) -> None:
     if not os.path.exists(path):
@@ -57,6 +58,7 @@ def place_start_scripts(service_path: str, service_type: 'ProjectType', repo_pat
 
     content = content.replace("{{repo_root}}", repo_root_relative)
     content = content.replace("{{service_name}}", service_name)
+    content = content.replace("{{docker_safe_service_name}}", formatValidDockerName(service_name))
 
     start_script_path = os.path.join(service_path, 'start.sh')
     with open(start_script_path, 'w') as file:
@@ -91,11 +93,11 @@ def scaffold_service_from_repository(
     repo_url: str,
     branch: str | None = None
 ) -> None:
-    
-    service_path = scaffold_service_directory(services_base_path, service_name)
+
+    service_path = scaffold_service_directory(services_base_path, formatValidFolderName(service_name))
     repo_name = os.path.basename(repo_url).replace(".git", "")
 
-    repo_location = os.path.join(service_path, repo_name)
+    repo_location = os.path.join(service_path, formatValidFolderName(repo_name))
 
     clone_repository(repo_url, repo_location, branch)
 
