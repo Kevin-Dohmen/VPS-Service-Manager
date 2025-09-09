@@ -5,11 +5,11 @@ def main():
     parser = argparse.ArgumentParser(description="VPS Service Manager")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    # Add subparser for 'add-service' command
+    # Add subparser for 'add-gh' command
     add_gh = subparsers.add_parser("add-gh", help="Add a new service from github")
+    add_gh.add_argument("name", type=str, help="Name of the service")
     add_gh.add_argument("url", type=str, help="URL of the GitHub repository")
     add_gh.add_argument("--branch", type=str, default=None, help="Name of the branch to use")
-    add_gh.add_argument("--use-docker-compose", action="store_true", help="Use docker-compose template")
 
     config = subparsers.add_parser("config", help="Configure VSM settings")
     group = config.add_mutually_exclusive_group(required=True)
@@ -25,9 +25,9 @@ def main():
 
     if args.command == "add-gh":
         commands.add_gh(
+            name=args.name,
             url=args.url,
             branch=args.branch,
-            use_docker_compose=args.use_docker_compose
         )
 
     if args.command == "config":

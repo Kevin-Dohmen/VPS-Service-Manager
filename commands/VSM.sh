@@ -1,3 +1,4 @@
+#!/bin/bash
 
 OLD_PWD="$PWD"
 
